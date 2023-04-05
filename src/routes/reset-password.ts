@@ -35,6 +35,8 @@ router.post(
 
     await existingUser.save();
 
+    console.log(existingUser);
+
     res.status(200).send({ user: existingUser });
   }
 );
