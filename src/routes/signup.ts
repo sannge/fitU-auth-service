@@ -11,6 +11,7 @@ const router = express.Router();
 router.post(
   "/api/users/signup",
   [
+    body("name").trim().notEmpty().withMessage("Name cannot be empty"),
     body("email").isEmail().withMessage("Email must be valid"),
     body("password")
       .trim()
@@ -19,11 +20,14 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, password, confirmPassword } = req.body;
-
+    const { name, email, password, confirmPassword } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new BadRequestError("Email in use");
+    }
+
+    if (name === null || name === undefined) {
+      throw new BadRequestError("Name cannot be empty.");
     }
 
     if (confirmPassword !== password) {
@@ -31,6 +35,7 @@ router.post(
     }
 
     const user = User.build({
+      name,
       email,
       password,
     });
@@ -40,6 +45,7 @@ router.post(
     const userJwt = jwt.sign(
       {
         id: user.id,
+        name: user.name,
         email: user.email,
       },
       process.env.JWT_KEY!

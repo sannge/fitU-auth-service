@@ -1,4 +1,4 @@
-FROM node:16-alphine
+FROM node:16
 
 WORKDIR /app 
 
@@ -8,4 +8,6 @@ RUN npm install --only=prod
 
 COPY . .
 
-CMD ["npm", "start"]
+RUN npm run build
+
+CMD [ "node", "dist/index.js" ]
