@@ -39,6 +39,13 @@ router.post(
       {
         id: existingUser.id,
         name: existingUser.name,
+        goal: existingUser.goal,
+        gender: existingUser.gender,
+        bodyType: existingUser.bodyType,
+        height: existingUser.height,
+        weight: existingUser.weight,
+        dob: existingUser.dob,
+        activityLevel: existingUser.activityLevel,
         email: existingUser.email,
       },
       process.env.JWT_KEY!
